@@ -3,3 +3,5 @@ Access modificators:
     [~] package
     [#] protected
     [-] private
+
+Cursive: abstract class

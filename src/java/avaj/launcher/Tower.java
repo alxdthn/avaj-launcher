@@ -1,7 +1,10 @@
+package java.avaj.launcher;
+
+import java.avaj.launcher.flyable.Flyable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Tower {
+public abstract class Tower {
 
     private List<Flyable> observers = new ArrayList<>();
 

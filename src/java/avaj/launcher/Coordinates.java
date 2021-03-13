@@ -1,3 +1,5 @@
+package java.avaj.launcher;
+
 public class Coordinates {
 
     private final int longitude;
