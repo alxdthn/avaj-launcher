@@ -1,6 +1,4 @@
-package java.avaj.launcher.flyable;
-
-import java.avaj.launcher.WeatherTower;
+package avaj.launcher;
 
 public interface Flyable {
 

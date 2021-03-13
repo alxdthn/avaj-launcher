@@ -1,10 +1,15 @@
-package java.avaj.launcher;
+package avaj.launcher;
 
 public class WeatherProvider {
 
     private static WeatherProvider weatherProvider = null;
 
-    private static final String[] weather = { "RAIN", "FOG", "SUN", "SNOW" };
+    private static final String[] weather = {
+            AvajLauncher.RAIN,
+            AvajLauncher.FOG,
+            AvajLauncher.SUN,
+            AvajLauncher.SNOW
+    };
 
     private WeatherProvider() {
     }
@@ -17,6 +22,6 @@ public class WeatherProvider {
     }
 
     public String getCurrentWeather(Coordinates coordinates) {
-        return "String";
+        return weather[coordinates.hashCode() % weather.length];
     }
 }

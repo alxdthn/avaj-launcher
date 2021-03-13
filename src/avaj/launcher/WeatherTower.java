@@ -1,13 +1,12 @@
-package java.avaj.launcher;
+package avaj.launcher;
 
 public class WeatherTower extends Tower {
 
     public String getWeather(Coordinates coordinates) {
-        //  TODO logic
-        return "String";
+        return WeatherProvider.getProvider().getCurrentWeather(coordinates);
     }
 
     void changeWeather() {
-        //  TODO logic
+        conditionsChanged();
     }
 }

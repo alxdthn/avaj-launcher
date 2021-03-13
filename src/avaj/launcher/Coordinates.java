@@ -1,4 +1,4 @@
-package java.avaj.launcher;
+package avaj.launcher;
 
 public class Coordinates {
 
@@ -15,7 +15,7 @@ public class Coordinates {
 
         this.longitude = longitude;
         this.latitude = latitude;
-        this.height = height;
+        this.height = Math.min(height, AvajLauncher.MAX_HEIGHT);
     }
 
     public int getLongitude() {
@@ -28,5 +28,14 @@ public class Coordinates {
 
     public int getHeight() {
         return height;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + longitude;
+        result = 31 * result + latitude;
+        result = 31 * result + height;
+        return result;
     }
 }
