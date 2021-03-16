@@ -1,7 +1,0 @@
-Access modificators:
-    [+] public
-    [~] package
-    [#] protected
-    [-] private
-
-Cursive: abstract class

@@ -5,13 +5,16 @@ import avaj.launcher.parser.Parser;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AvajLauncher {
 
     @SuppressWarnings("FieldCanBeLocal")
-    private static boolean DEBUG = true;
+    private final static boolean DEBUG = true;
+
+    public final static int MAX_INT_FOR_DECRYPT = 1_000_000;
 
     public static int MAX_HEIGHT = 100;
 
@@ -20,7 +23,7 @@ public class AvajLauncher {
     public final static String SUN = "SUN";
     public final static String SNOW = "SNOW";
 
-    private final static String OUTPUT_FILE = "out.txt";
+    private final static String OUTPUT_FILE = "simulation.txt";
 
     private final static List<String> outputResult = new ArrayList<>();
 
@@ -41,7 +44,7 @@ public class AvajLauncher {
         }
     }
 
-    private static void start(String file) {
+    private static void start(String file) throws NoSuchAlgorithmException {
         WeatherTower weatherTower = new WeatherTower();
         Parser parser = new Parser(file, weatherTower);
         int simulationNumber = parser.parse();
@@ -58,6 +61,7 @@ public class AvajLauncher {
         File outputFile = new File(OUTPUT_FILE);
         PrintWriter writer = new PrintWriter(outputFile);
         writer.write(String.join("\n", outputResult));
+        writer.write("\n");
         writer.close();
     }
 }

@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.PatternSyntaxException;
 
 public class Parser {
@@ -22,14 +23,17 @@ public class Parser {
 
     private WeatherTower weatherTower;
 
+    private MD5Decryptor decryptor;
+
     public Parser(String file, WeatherTower weatherTower) {
         this.file = file;
         this.weatherTower = weatherTower;
     }
 
-    public int parse() throws ArgumentException, BadFileException {
+    public int parse() throws ArgumentException, BadFileException, NoSuchAlgorithmException {
         lineCounter = 1;
         simulations = 0;
+        decryptor = MD5Decryptor.getInstance();
         collectFileData();
         return simulations;
     }
@@ -71,14 +75,9 @@ public class Parser {
         }
 
         String type = splitResult[0];
-        if (type.equals("8a7259026c561ed7ec52256a4666c354")) {
-            type = "JetPlane";
-        } else if (type.equals("9aca0d8a2dac0e6641a181fd9405da3e")) {
-            type = "Helicopter";
-        } else if (type.equals("10f93ad4617a2ca73cc42763cfa73cbf")) {
-            type = "Baloon";
-        } else if (!type.matches("(JetPlane|Helicopter|Baloon)")) {
-            throw new BadFileException(lineCounter, line);
+        if (!type.matches("(JetPlane|Helicopter|Baloon)")) {
+            if (type.length() != 32) throw new BadFileException(lineCounter, line);
+            type = decryptor.decryptType(type);
         }
 
         String name = splitResult[1];
@@ -106,12 +105,11 @@ public class Parser {
         int result;
         try {
             result = Integer.parseInt(src);
-            if (result < 0) {
-                throw new BadFileException(lineCounter, line);
-            }
+            if (result < 0) throw new BadFileException(lineCounter, line);
             return result;
         } catch (NumberFormatException e) {
-            throw new BadFileException(lineCounter, line);
+            if (src.length() != 32) throw new BadFileException(lineCounter, line);
+            return decryptor.decryptInteger(src);
         }
     }
 }
