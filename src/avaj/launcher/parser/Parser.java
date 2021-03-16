@@ -36,7 +36,7 @@ public class Parser {
 
     private void collectFileData() throws BadFileException {
         BufferedReader reader;
-        String line;
+        String line = null;
 
         try {
             reader = new BufferedReader(new FileReader(file));
@@ -44,18 +44,17 @@ public class Parser {
             throw new BadFileException(file);
         }
 
-        line = readLine(reader);
-        simulations = parseInteger(line, line);
-
-        while (line != null) {
-            try {
-                line = reader.readLine();
+        try {
+            line = readLineInternal(reader);
+            simulations = parseInteger(line, line);
+            while (line != null) {
+                line = readLineInternal(reader);
                 if (line == null) break;
                 Flyable flyable = parseLine(line);
                 flyable.registerTower(weatherTower);
-            } catch (IOException e) {
-                throw new BadFileException(lineCounter, line);
             }
+        } catch (IOException | PatternSyntaxException e) {
+            throw new BadFileException(lineCounter, line);
         }
 
         try {
@@ -65,50 +64,42 @@ public class Parser {
         }
     }
 
-    private Flyable parseLine(String line) throws BadFileException {
-        try {
-            String[] splitResult = line.split("\\s+");
-            if (splitResult.length != 5) {
-                throw new BadFileException(lineCounter, line);
-            }
-
-            String type = splitResult[0];
-            if (type.equals("8a7259026c561ed7ec52256a4666c354")) {
-                type = "JetPlane";
-            } else if (type.equals("9aca0d8a2dac0e6641a181fd9405da3e")) {
-                type = "Helicopter";
-            } else if (type.equals("10f93ad4617a2ca73cc42763cfa73cbf")) {
-                type = "Baloon";
-            } else if (!type.matches("(JetPlane|Helicopter|Baloon)")) {
-                throw new BadFileException(lineCounter, line);
-            }
-
-            String name = splitResult[1];
-
-            int longitude = parseInteger(splitResult[2], line);
-            int latitude = parseInteger(splitResult[3], line);
-            int height = parseInteger(splitResult[4], line);
-
-            return AircraftFactory.newAircraft(
-                    type,
-                    name,
-                    longitude,
-                    latitude,
-                    height
-            );
-        } catch (PatternSyntaxException e) {
+    private Flyable parseLine(String line) throws BadFileException, PatternSyntaxException {
+        String[] splitResult = line.split("\\s+");
+        if (splitResult.length != 5) {
             throw new BadFileException(lineCounter, line);
         }
+
+        String type = splitResult[0];
+        if (type.equals("8a7259026c561ed7ec52256a4666c354")) {
+            type = "JetPlane";
+        } else if (type.equals("9aca0d8a2dac0e6641a181fd9405da3e")) {
+            type = "Helicopter";
+        } else if (type.equals("10f93ad4617a2ca73cc42763cfa73cbf")) {
+            type = "Baloon";
+        } else if (!type.matches("(JetPlane|Helicopter|Baloon)")) {
+            throw new BadFileException(lineCounter, line);
+        }
+
+        String name = splitResult[1];
+
+        int longitude = parseInteger(splitResult[2], line);
+        int latitude = parseInteger(splitResult[3], line);
+        int height = parseInteger(splitResult[4], line);
+
+        return AircraftFactory.newAircraft(
+                type,
+                name,
+                longitude,
+                latitude,
+                height
+        );
     }
 
-    private String readLine(BufferedReader reader) {
-        try {
-            String line = reader.readLine();
-            lineCounter++;
-            return line;
-        } catch (IOException e) {
-            throw new BadFileException(file);
-        }
+    private String readLineInternal(BufferedReader reader) throws IOException {
+        String line = reader.readLine();
+        lineCounter++;
+        return line;
     }
 
     private int parseInteger(String src, String line) throws BadFileException {

@@ -21,8 +21,8 @@ public abstract class Aircraft {
     }
 
     protected void land(WeatherTower weatherTower, Flyable flyable) {
-        System.out.printf(
-                "%s landing in lat %d; lng %d\n",
+        AvajLauncher.trackOutput(
+                "%s landing in lat %d; lng %d",
                 formatSelfData(),
                 coordinates.getLatitude(),
                 coordinates.getLongitude()

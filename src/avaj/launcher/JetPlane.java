@@ -12,7 +12,7 @@ public class JetPlane extends Aircraft implements Flyable {
     public void updateConditions() {
         switch (weatherTower.getWeather(coordinates)) {
             case AvajLauncher.SUN:
-                System.out.printf("%s: It's hot day!\n", formatSelfData());
+                AvajLauncher.trackOutput("%s: It's hot day!", formatSelfData());
                 coordinates = new Coordinates(
                         coordinates.getLongitude(),
                         coordinates.getLatitude() + 10,
@@ -20,7 +20,7 @@ public class JetPlane extends Aircraft implements Flyable {
                 );
                 break;
             case AvajLauncher.RAIN:
-                System.out.printf("%s: It's rainy day!\n", formatSelfData());
+                AvajLauncher.trackOutput("%s: It's rainy day!", formatSelfData());
                 coordinates = new Coordinates(
                         coordinates.getLongitude(),
                         coordinates.getLatitude() + 5,
@@ -28,7 +28,7 @@ public class JetPlane extends Aircraft implements Flyable {
                 );
                 break;
             case AvajLauncher.FOG:
-                System.out.printf("%s: It's foggy day!\n", formatSelfData());
+                AvajLauncher.trackOutput("%s: It's foggy day!", formatSelfData());
                 coordinates = new Coordinates(
                         coordinates.getLongitude(),
                         coordinates.getLatitude() + 1,
@@ -36,7 +36,7 @@ public class JetPlane extends Aircraft implements Flyable {
                 );
                 break;
             case AvajLauncher.SNOW:
-                System.out.printf("%s: It's snowy day!\n", formatSelfData());
+                AvajLauncher.trackOutput("%s: It's snowy day!", formatSelfData());
                 coordinates = new Coordinates(
                         coordinates.getLongitude(),
                         coordinates.getLatitude(),

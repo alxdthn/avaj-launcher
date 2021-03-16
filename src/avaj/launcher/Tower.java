@@ -9,16 +9,16 @@ public abstract class Tower {
     private final List<Flyable> observers = new LinkedList<>();
 
     public void register(Flyable flyable) {
-        System.out.printf(
-                "Tower says: %s registered to weather tower\n",
+        AvajLauncher.trackOutput(
+                "Tower says: %s registered to weather tower",
                 ((Aircraft) flyable).formatSelfData()
         );
         observers.add(flyable);
     }
 
     public void unregister(Flyable flyable) {
-        System.out.printf(
-                "Tower says: %s unregistered from weather tower\n",
+        AvajLauncher.trackOutput(
+                "Tower says: %s unregistered from weather tower",
                 ((Aircraft) flyable).formatSelfData()
         );
         observers.remove(flyable);
