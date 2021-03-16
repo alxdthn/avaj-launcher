@@ -3,7 +3,6 @@ package avaj.launcher.parser;
 import avaj.launcher.AircraftFactory;
 import avaj.launcher.Flyable;
 import avaj.launcher.WeatherTower;
-import avaj.launcher.exceptions.ArgumentException;
 import avaj.launcher.exceptions.BadFileException;
 
 import java.io.BufferedReader;
@@ -19,9 +18,9 @@ public class Parser {
 
     private int simulations = 0;
 
-    private String file;
+    private final String file;
 
-    private WeatherTower weatherTower;
+    private final WeatherTower weatherTower;
 
     private MD5Decryptor decryptor;
 
@@ -30,7 +29,7 @@ public class Parser {
         this.weatherTower = weatherTower;
     }
 
-    public int parse() throws ArgumentException, BadFileException, NoSuchAlgorithmException {
+    public int parse() throws NoSuchAlgorithmException {
         lineCounter = 1;
         simulations = 0;
         decryptor = MD5Decryptor.getInstance();
@@ -68,7 +67,7 @@ public class Parser {
         }
     }
 
-    private Flyable parseLine(String line) throws BadFileException, PatternSyntaxException {
+    private Flyable parseLine(String line) {
         String[] splitResult = line.split("\\s+");
         if (splitResult.length != 5) {
             throw new BadFileException(lineCounter, line);
@@ -101,7 +100,7 @@ public class Parser {
         return line;
     }
 
-    private int parseInteger(String src, String line) throws BadFileException {
+    private int parseInteger(String src, String line) {
         int result;
         try {
             result = Integer.parseInt(src);
